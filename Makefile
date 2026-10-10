@@ -1,0 +1,25 @@
+# basically a command runner
+.PHONY: build run run-ncurses rn test format format-check
+
+build: build/Makefile
+	cmake --build build
+
+build/Makefile:
+	cmake -S . -B build
+
+run: build
+	./build/Conway
+
+run-ncurses: build
+	./build/ConwayNcurses
+
+rn: run-ncurses
+
+test: build
+	cd build && ctest --output-on-failure
+
+format:
+	find . -path ./build -prune -o \( -name '*.c' -o -name '*.h' \) -print | xargs clang-format -i
+
+format-check:
+	find . -path ./build -prune -o \( -name '*.c' -o -name '*.h' \) -print | xargs clang-format --dry-run --Werror
