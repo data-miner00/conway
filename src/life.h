@@ -19,9 +19,15 @@ Grid *grid_create(int width, int height);
 void grid_free(Grid *grid);
 
 // Is the cell at column x, row y alive? (0, 0) is the top-left corner.
+// A position that is off the board is dead.
 bool grid_get(const Grid *grid, int x, int y);
 
-// Makes the cell at column x, row y alive or dead.
+// Makes the cell at column x, row y alive or dead. Does nothing if the position is off the
+// board.
 void grid_set(Grid *grid, int x, int y, bool alive);
+
+// How many of the eight cells around column x, row y are alive? Positions that are off the
+// board count as dead. The cell at (x, y) itself is not counted.
+int grid_count_neighbours(const Grid *grid, int x, int y);
 
 #endif

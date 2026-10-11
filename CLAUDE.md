@@ -14,17 +14,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   together, then keep updated)
   - [x] M1: Grid module (`src/life.c`/`life.h`, replacing `hello.*`): create/free a grid, get/set
         a cell. Done when `test_life` passes a set/get round trip.
-  - [ ] M2: Neighbour counting for one cell, including the edges of the grid. Done when tests on
+  - [x] M2: Neighbour counting for one cell, including the edges of the grid. Done when tests on
         hand-placed cells pass (corner, edge, middle).
   - [ ] M3: Step to the next generation using a second buffer. Done when tests pass for a block
         (still), a blinker (period 2) and a glider (moved after 4 steps).
   - [ ] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
   - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges.
-- **Current milestone / where we left off:** M1 done, all five `test_life` tests pass. M2 is
-  next; it is not scaffolded yet. `grid_get`/`grid_set` do no bounds checking, which M2 has to
-  deal with: the user was asked what `grid_get(grid, 5, 0)` and `grid_get(grid, -1, 0)` return on
-  a 5x3 grid and has not answered yet.
+- **Current milestone / where we left off:** M1 and M2 done, all twelve `test_life` tests pass.
+  Decided by the user: dead edges (not wrap-around); `grid_get` answers dead and `grid_set` does
+  nothing for off-board positions. M3 is next and is not scaffolded yet; the user was asked why
+  the next generation cannot be computed in place. Optional tidy-ups suggested, not required:
+  a `static` helper for the bounds check repeated in `grid_get`/`grid_set`, and loops instead of
+  eight separate checks in `grid_count_neighbours`.
 
 ## How Claude should help (tutor mode)
 
