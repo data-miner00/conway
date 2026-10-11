@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   files, file I/O (stretch)
 - **Milestones:** (Claude's draft from project start — not yet confirmed by the user; adjust
   together, then keep updated)
-  - [ ] M1: Grid module (`src/life.c`/`life.h`, replacing `hello.*`): create/free a grid, get/set
+  - [x] M1: Grid module (`src/life.c`/`life.h`, replacing `hello.*`): create/free a grid, get/set
         a cell. Done when `test_life` passes a set/get round trip.
   - [ ] M2: Neighbour counting for one cell, including the edges of the grid. Done when tests on
         hand-placed cells pass (corner, edge, middle).
@@ -21,8 +21,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - [ ] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
   - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges.
-- **Current milestone / where we left off:** Not started. Template renamed to Conway; `hello.*`
-  placeholders are still in place. M1 is next.
+- **Current milestone / where we left off:** M1 done, all five `test_life` tests pass. M2 is
+  next; it is not scaffolded yet. `grid_get`/`grid_set` do no bounds checking, which M2 has to
+  deal with: the user was asked what `grid_get(grid, 5, 0)` and `grid_get(grid, -1, 0)` return on
+  a 5x3 grid and has not answered yet.
 
 ## How Claude should help (tutor mode)
 
@@ -72,18 +74,19 @@ If the ncurses program exits uncleanly and the terminal is garbled, run `reset` 
 
 ## Architecture
 
-- **Game logic should live in frontend-independent modules** (`src/<module>.c` + `.h`, like the
-  placeholder `hello.c`/`hello.h`). Frontends only handle I/O and call into them:
+- **Game logic should live in frontend-independent modules** (`src/<module>.c` + `.h`, like
+  `life.c`/`life.h`). Frontends only handle I/O and call into them:
   - `src/main.c` — plain stdio loop (`getchar`, `q` quits) → `Conway` executable.
   - `src/main_ncurses.c` — ncurses loop (`initscr`/`cbreak`/`noecho`/`keypad`, redraw each
     iteration, `q` quits, `endwin` on exit) → `ConwayNcurses` executable.
 - **Adding a new logic module requires editing CMake in up to three places:** add the `.c` to the
-  `Conway` executable, to `ConwayNcurses` (it currently lists only `main_ncurses.c`), and to any
+  `Conway` executable, to `ConwayNcurses`, and to any
   test executable that exercises it.
 - **Tests** (`tests/`): each test is a standalone executable with its own `main()` using
   `assert()`, compiled together with the needed `src/*.c` files and registered via `add_test` in
   `tests/CMakeLists.txt`. No test framework. Test logic modules, not the frontends.
-- `hello.c`/`hello.h`/`test_hello.c` are placeholders to be replaced by the real game module.
+  Everything under `tests/` is built with `-Wall -Wextra` and AddressSanitizer/UBSan, so
+  out-of-bounds access, reading uninitialised `bool`s and leaks fail the test.
 
 ## Style
 

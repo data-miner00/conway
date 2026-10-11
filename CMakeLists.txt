@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 project(
   Conway
@@ -18,7 +18,7 @@ add_executable(
 
   # Source of executable
   src/main.c
-  src/hello.c
+  src/life.c
 )
 
 find_package(Curses REQUIRED)
@@ -28,6 +28,7 @@ add_executable(
   ${PROJECT_NAME}Ncurses
 
   src/main_ncurses.c
+  src/life.c
 )
 
 target_include_directories(
