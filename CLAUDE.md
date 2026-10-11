@@ -18,15 +18,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
         hand-placed cells pass (corner, edge, middle).
   - [x] M3: Step to the next generation using a second buffer. Done when tests pass for a block
         (still), a blinker (period 2) and a glider (moved after 4 steps).
-  - [ ] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
+  - [x] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
   - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges.
-- **Current milestone / where we left off:** M1 to M3 done; `test_life` and `test_step` pass and
-  the format check is clean. M1 and M2 are committed, M3 is not yet. Decided by the user: dead
-  edges (not wrap-around). `grid_step` builds the new generation in a fresh buffer, then frees
-  the old cells and swaps the pointer. M4 is next and has no tests: the user was briefed (grid +
-  glider in `src/main.c`, a print function there, Enter steps, `q` quits, free on exit) and
-  asked what `getchar()` returns at end of input.
+- **Current milestone / where we left off:** M1 to M4 done; `test_life` and `test_step` pass and
+  the format check is clean. M1 to M3 are committed, M4 is not yet. Decided by the user: dead
+  edges (not wrap-around); in the CLI every typed character steps a generation, not only Enter.
+  `src/main.c` shows a glider on a 20x10 grid, quits on `q` or `EOF`, and frees the grid on
+  every exit. Optional tidy-ups suggested, not required: the print/read/quit block appears both
+  before the loop and inside it; the screen clear does not move the cursor home. M5 (ncurses
+  frontend) is next and has not been broken into steps yet.
 
 ## How Claude should help (tutor mode)
 
