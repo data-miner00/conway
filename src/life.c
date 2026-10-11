@@ -87,3 +87,40 @@ int grid_count_neighbours(const Grid *grid, int x, int y) {
 
     return count;
 }
+
+bool grid_step(Grid *grid) {
+    bool *new_cells = malloc(grid->width * grid->height * sizeof(bool));
+    if (new_cells == NULL) {
+        return false;
+    }
+    for (int i = 0; i < grid->width * grid->height; i++) {
+        new_cells[i] = false;
+    }
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            int count = grid_count_neighbours(grid, x, y);
+            bool alive = grid_get(grid, x, y);
+            int index = y * grid->width + x;
+
+            if (alive) {
+                if (count == 2 || count == 3) {
+                    new_cells[index] = true;
+                } else {
+                    new_cells[index] = false;
+                }
+            } else {
+                if (count == 3) {
+                    new_cells[index] = true;
+                } else {
+                    new_cells[index] = false;
+                }
+            }
+        }
+    }
+
+    free(grid->cells);
+    grid->cells = new_cells;
+
+    return true;
+}

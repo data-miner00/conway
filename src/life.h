@@ -30,4 +30,12 @@ void grid_set(Grid *grid, int x, int y, bool alive);
 // board count as dead. The cell at (x, y) itself is not counted.
 int grid_count_neighbours(const Grid *grid, int x, int y);
 
+// Advances the grid by one generation. Every cell's new state is worked out from the grid as it
+// was before the call:
+//   - a live cell with 2 or 3 live neighbours stays alive
+//   - a dead cell with exactly 3 live neighbours becomes alive
+//   - every other cell ends up dead
+// Returns false, leaving the grid unchanged, if it could not get the memory it needed.
+bool grid_step(Grid *grid);
+
 #endif

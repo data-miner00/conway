@@ -16,17 +16,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
         a cell. Done when `test_life` passes a set/get round trip.
   - [x] M2: Neighbour counting for one cell, including the edges of the grid. Done when tests on
         hand-placed cells pass (corner, edge, middle).
-  - [ ] M3: Step to the next generation using a second buffer. Done when tests pass for a block
+  - [x] M3: Step to the next generation using a second buffer. Done when tests pass for a block
         (still), a blinker (period 2) and a glider (moved after 4 steps).
   - [ ] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
   - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges.
-- **Current milestone / where we left off:** M1 and M2 done, all twelve `test_life` tests pass.
-  Decided by the user: dead edges (not wrap-around); `grid_get` answers dead and `grid_set` does
-  nothing for off-board positions. M3 is next and is not scaffolded yet; the user was asked why
-  the next generation cannot be computed in place. Optional tidy-ups suggested, not required:
-  a `static` helper for the bounds check repeated in `grid_get`/`grid_set`, and loops instead of
-  eight separate checks in `grid_count_neighbours`.
+- **Current milestone / where we left off:** M1 to M3 done; `test_life` and `test_step` pass and
+  the format check is clean. M1 and M2 are committed, M3 is not yet. Decided by the user: dead
+  edges (not wrap-around). `grid_step` builds the new generation in a fresh buffer, then frees
+  the old cells and swaps the pointer. M4 is next and has no tests: the user was briefed (grid +
+  glider in `src/main.c`, a print function there, Enter steps, `q` quits, free on exit) and
+  asked what `getchar()` returns at end of input.
 
 ## How Claude should help (tutor mode)
 
@@ -86,7 +86,8 @@ If the ncurses program exits uncleanly and the terminal is garbled, run `reset` 
   test executable that exercises it.
 - **Tests** (`tests/`): each test is a standalone executable with its own `main()` using
   `assert()`, compiled together with the needed `src/*.c` files and registered via `add_test` in
-  `tests/CMakeLists.txt`. No test framework. Test logic modules, not the frontends.
+  `tests/CMakeLists.txt` (currently `test_life` and `test_step`). No test framework. Test logic
+  modules, not the frontends.
   Everything under `tests/` is built with `-Wall -Wextra` and AddressSanitizer/UBSan, so
   out-of-bounds access, reading uninitialised `bool`s and leaks fail the test.
 

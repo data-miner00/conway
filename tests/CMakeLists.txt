@@ -16,3 +16,17 @@ target_include_directories(
 )
 
 add_test(NAME test_life COMMAND test_life)
+
+add_executable(
+  test_step
+
+  test_step.c
+  ${CMAKE_SOURCE_DIR}/src/life.c
+)
+
+target_include_directories(
+  test_step
+  PRIVATE ${CMAKE_SOURCE_DIR}/src
+)
+
+add_test(NAME test_step COMMAND test_step)
