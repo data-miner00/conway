@@ -2,7 +2,7 @@
 .PHONY: build run run-ncurses rn test format format-check
 
 build: build/Makefile
-	cmake --build build
+	cmake --build build -j $(shell nproc)
 
 build/Makefile:
 	cmake -S . -B build
