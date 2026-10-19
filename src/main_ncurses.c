@@ -8,12 +8,11 @@ static void print_grid(Grid *grid) {
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
             if (grid_get(grid, x, y)) {
-                mvprintw(y, x, "*"); // mvaddch?
+                mvaddch(y, x, '*');
             } else {
-                mvprintw(y, x, " ");
+                mvaddch(y, x, ' ');
             }
         }
-        move(y + 1, 0);
     }
 }
 
