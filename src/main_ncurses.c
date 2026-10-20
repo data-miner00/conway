@@ -6,6 +6,12 @@
 
 #define GETCH_TIMEOUT 200
 
+enum GameState {
+    GAME_STATE_RUNNING = 1,
+    GAME_STATE_PAUSED = 2,
+    GAME_STATE_OVER = 3,
+};
+
 static void print_grid(Grid *grid) {
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
@@ -15,6 +21,15 @@ static void print_grid(Grid *grid) {
                 mvaddch(y, x, ' ');
             }
         }
+    }
+}
+
+static void safe_step(Grid *grid) {
+    bool ok = grid_step(grid);
+    if (!ok) {
+        grid_free(grid);
+        endwin();
+        exit(1);
     }
 }
 
@@ -33,15 +48,15 @@ int main(int argc, char *argv[]) {
     grid_set(grid, 1, 2, true);
     grid_set(grid, 2, 2, true);
 
-    initscr();            // enter curses mode, takes over the terminal
+    initscr();              // enter curses mode, takes over the terminal
     timeout(GETCH_TIMEOUT); // max wait time for getch()
-    cbreak();             // read input char-by-char, don't wait for Enter
-    noecho();             // don't auto-print typed characters
-    keypad(stdscr, TRUE); // let getch() return arrow keys etc. as single KEY_* constants
-    curs_set(1);          // primary cursor
-    start_color();        // enable colors
+    cbreak();               // read input char-by-char, don't wait for Enter
+    noecho();               // don't auto-print typed characters
+    keypad(stdscr, TRUE);   // let getch() return arrow keys etc. as single KEY_* constants
+    curs_set(1);            // primary cursor
+    start_color();          // enable colors
 
-    bool is_running = true;
+    enum GameState state = GAME_STATE_RUNNING;
 
     while (true) {
         clear();
@@ -51,22 +66,31 @@ int main(int argc, char *argv[]) {
 
         switch (ch) {
         case 'q':
-            is_running = false;
+            state = GAME_STATE_OVER;
+            break;
+        case ' ':
+            if (state == GAME_STATE_RUNNING) {
+                state = GAME_STATE_PAUSED;
+            } else if (state == GAME_STATE_PAUSED) {
+                state = GAME_STATE_RUNNING;
+            }
+            break;
+        case 'n':
+            safe_step(grid);
             break;
         default:
             break;
         }
 
-        if (!is_running) {
+        if (state == GAME_STATE_OVER) {
             break;
         }
 
-        bool ok = grid_step(grid);
-        if (!ok) {
-            grid_free(grid);
-            endwin();
-            return 1;
+        if (state == GAME_STATE_PAUSED) {
+            continue;
         }
+
+        safe_step(grid);
     }
 
     grid_free(grid);
