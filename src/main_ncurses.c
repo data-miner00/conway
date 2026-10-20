@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define GETCH_TIMEOUT 200
+
 static void print_grid(Grid *grid) {
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
@@ -32,6 +34,7 @@ int main(int argc, char *argv[]) {
     grid_set(grid, 2, 2, true);
 
     initscr();            // enter curses mode, takes over the terminal
+    timeout(GETCH_TIMEOUT); // max wait time for getch()
     cbreak();             // read input char-by-char, don't wait for Enter
     noecho();             // don't auto-print typed characters
     keypad(stdscr, TRUE); // let getch() return arrow keys etc. as single KEY_* constants
