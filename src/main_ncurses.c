@@ -12,13 +12,26 @@ enum GameState {
     GAME_STATE_OVER = 3,
 };
 
-static void print_grid(Grid *grid) {
+typedef struct Point {
+    int x;
+    int y;
+} point_t;
+
+static void print_grid(Grid *grid, point_t *cursor) {
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
             if (grid_get(grid, x, y)) {
-                mvaddch(y, x, '*');
+                if (x == cursor->x && y == cursor->y) {
+                    mvaddch(y, x, 'x');
+                } else {
+                    mvaddch(y, x, '*');
+                }
             } else {
-                mvaddch(y, x, ' ');
+                if (x == cursor->x && y == cursor->y) {
+                    mvaddch(y, x, 'x');
+                } else {
+                    mvaddch(y, x, ' ');
+                }
             }
         }
     }
@@ -42,6 +55,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    point_t cursor = {0};
+
     grid_set(grid, 1, 0, true);
     grid_set(grid, 2, 1, true);
     grid_set(grid, 0, 2, true);
@@ -60,7 +75,7 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         clear();
-        print_grid(grid);
+        print_grid(grid, &cursor);
         refresh();
         int ch = getch();
 
@@ -77,6 +92,26 @@ int main(int argc, char *argv[]) {
             break;
         case 'n':
             safe_step(grid);
+            break;
+        case 'w':
+            if (state == GAME_STATE_PAUSED) {
+                cursor.y -= 1;
+            }
+            break;
+        case 'a':
+            if (state == GAME_STATE_PAUSED) {
+                cursor.x -= 1;
+            }
+            break;
+        case 's':
+            if (state == GAME_STATE_PAUSED) {
+                cursor.y += 1;
+            }
+            break;
+        case 'd':
+            if (state == GAME_STATE_PAUSED) {
+                cursor.x += 1;
+            }
             break;
         default:
             break;
