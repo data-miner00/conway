@@ -20,14 +20,45 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
         (still), a blinker (period 2) and a glider (moved after 4 steps).
   - [x] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
   - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
-  - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges.
-- **Current milestone / where we left off:** M1 to M4 done; `test_life` and `test_step` pass and
-  the format check is clean. M1 to M3 are committed, M4 is not yet. Decided by the user: dead
-  edges (not wrap-around); in the CLI every typed character steps a generation, not only Enter.
-  `src/main.c` shows a glider on a 20x10 grid, quits on `q` or `EOF`, and frees the grid on
-  every exit. Optional tidy-ups suggested, not required: the print/read/quit block appears both
-  before the loop and inside it; the screen clear does not move the cursor home. M5 (ncurses
-  frontend) is next and has not been broken into steps yet.
+        Steps (Claude's draft, not yet confirmed by the user):
+    - [x] M5a: Draw the grid with ncurses; any key steps one generation, `q` quits. Done when
+          `make rn` shows the glider moving one step per key press and the terminal is normal
+          again after quitting.
+    - [x] M5b: Run by itself (`timeout()` so `getch()` stops waiting); Space pauses and resumes,
+          another key steps once while paused. Done when the glider crawls without key presses.
+    - [ ] M5c: Arrow keys, `h`/`j`/`k`/`l` and `w`/`a`/`s`/`d` move a cursor that stays on the
+          board; Enter toggles the cell under it; moving and toggling only work while paused;
+          you can see whether the cell under the cursor is alive. Done when a hand-drawn blinker
+          flips after resuming (passed) and the cell under the cursor shows its state. (Keys,
+          paused-only and the cursor visibility being part of M5c decided by the user.)
+    - [ ] M5d (optional): grid sized to the terminal, a status line, colours.
+  - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges;
+        `p` steps back a generation (asked for by the user; needs a history of past grids,
+        because Life cannot be run backwards).
+- **Current milestone / where we left off:** M1 to M5b done; `test_life` and `test_step` pass.
+  M5c: cursor movement and the Enter toggle work (blinker check passed). Last step: the `x`
+  hides whether the cell under it is alive. Options offered: different characters, the
+  terminal's own cursor via `move()`, or `A_REVERSE` OR-ed into the character; waiting on the
+  user's choice.
+- **Decided by the user:** dead edges (not wrap-around); in the CLI every typed character steps
+  a generation. ncurses: 200 ms `timeout`, `enum GameState` (RUNNING/PAUSED/OVER), Space
+  toggles pause, `n` steps once (also while running, where that pass steps twice; not
+  revisited), `q` quits; `safe_step()` frees the grid, calls `endwin()` and `exit(1)` if
+  `grid_step` fails (correct as is, the user's design). Cursor: arrows, hjkl and wasd all move it
+  (fall-through `case` labels); Enter toggles;
+  both moving the cursor and toggling are ignored while running.
+- **State of the code:** `src/main.c` shows a glider on a 20x10 grid, quits on `q` or `EOF`, and
+  frees the grid on every exit. `src/main_ncurses.c` creates the grid before `initscr()` (error
+  to `stderr`), sets up curses, then loops: draw, refresh, `getch()`, `switch` on the key, quit
+  if OVER, skip the step if PAUSED, else `safe_step()`.
+- **Covered with the user:** `'*'` vs `"*"` (they got `sizeof("**") == 3`), `mvprintw`
+  format-string risk, `break` only leaving a `switch`, why `timeout()` before `initscr()` did
+  nothing (`stdscr` is a NULL global), globals zero-initialised vs. uninitialised locals,
+  `#define` as text replacement, fall-through `case` labels, `exit()` vs `return`.
+- **Open / optional:** offered, not yet accepted: `-Wall -Wextra` on the `Conway` and
+  `ConwayNcurses` targets. `main.c` tidy-ups: the print/read/quit block is duplicated before the
+  loop; the screen clear does not move the cursor home. On the 20x10 grid the glider settles
+  into a 2x2 block at the bottom edge after ~6 s; correct with dead edges, not a bug.
 
 ## How Claude should help (tutor mode)
 

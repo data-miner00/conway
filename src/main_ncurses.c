@@ -125,6 +125,12 @@ int main(int argc, char *argv[]) {
                 cursor.x += 1;
             }
             break;
+        // case KEY_ENTER: this does not work becoz it is the keypad's enter key
+        case '\n':
+            if (state == GAME_STATE_PAUSED) {
+                grid_set(grid, cursor.x, cursor.y, !grid_get(grid, cursor.x, cursor.y));
+            }
+            break;
         default:
             break;
         }
