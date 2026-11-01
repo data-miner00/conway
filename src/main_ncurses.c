@@ -94,21 +94,29 @@ int main(int argc, char *argv[]) {
             safe_step(grid);
             break;
         case 'w':
+        case 'k':
+        case KEY_UP:
             if (state == GAME_STATE_PAUSED) {
                 cursor.y -= 1;
             }
             break;
         case 'a':
+        case 'h':
+        case KEY_LEFT:
             if (state == GAME_STATE_PAUSED) {
                 cursor.x -= 1;
             }
             break;
         case 's':
+        case 'j':
+        case KEY_DOWN:
             if (state == GAME_STATE_PAUSED) {
                 cursor.y += 1;
             }
             break;
         case 'd':
+        case 'l':
+        case KEY_RIGHT:
             if (state == GAME_STATE_PAUSED) {
                 cursor.x += 1;
             }
