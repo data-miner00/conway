@@ -48,26 +48,18 @@ static void safe_step(Grid *grid) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    srand(time(NULL));
-
-    // make this configurable
-    const int Width = 20;
-    const int Height = 10;
-
-    Grid *grid = grid_create(Width, Height);
-    if (grid == NULL) {
-        fprintf(stderr, "Failed to create grid\n");
-        return 1;
-    }
-
-    point_t cursor = {0};
-
+static void populate_initial_cells(Grid *grid) {
     grid_set(grid, 1, 0, true);
     grid_set(grid, 2, 1, true);
     grid_set(grid, 0, 2, true);
     grid_set(grid, 1, 2, true);
     grid_set(grid, 2, 2, true);
+}
+
+int main(int argc, char *argv[]) {
+    srand(time(NULL));
+
+    point_t cursor = {0};
 
     initscr();              // enter curses mode, takes over the terminal
     timeout(GETCH_TIMEOUT); // max wait time for getch()
@@ -78,6 +70,15 @@ int main(int argc, char *argv[]) {
     start_color();          // enable colors
 
     enum GameState state = GAME_STATE_RUNNING;
+
+    Grid *grid = grid_create(COLS, LINES);
+    if (grid == NULL) {
+        endwin();
+        fprintf(stderr, "Failed to create grid\n");
+        return 1;
+    }
+
+    populate_initial_cells(grid);
 
     while (true) {
         clear();

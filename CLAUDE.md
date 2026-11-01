@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
         (still), a blinker (period 2) and a glider (moved after 4 steps).
   - [x] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
   - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
-        Steps (Claude's draft, not yet confirmed by the user):
+        Steps:
     - [x] M5a: Draw the grid with ncurses; any key steps one generation, `q` quits. Done when
           `make rn` shows the glider moving one step per key press and the terminal is normal
           again after quitting.
@@ -29,14 +29,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
     - [x] M5c: Arrow keys, `h`/`j`/`k`/`l` and `w`/`a`/`s`/`d` move a cursor that stays on the
           board; Enter toggles the cell under it; moving and toggling only work while paused;
           the cursor cell is drawn in reverse video so its state stays visible.
-    - [ ] M5d (optional): grid sized to the terminal, a status line, colours.
+    - [ ] M5d (optional, chosen by the user): grid sized to the terminal, a status line,
+          colours. Steps (Claude's draft, not yet confirmed by the user):
+      - [x] M5d-1: Read the terminal size after `initscr()` and make the grid fill it. Done
+            when different terminal sizes give different boards, the cursor reaches the
+            bottom-right cell, and a `grid_create` failure still prints its message on a
+            restored terminal.
+      - [ ] M5d-2: Make the board one row shorter and put a status line on the freed bottom
+            row: RUNNING/PAUSED, a generation counter, key help. Done when it changes on Space
+            and the counter climbs while running. (Freeing the row moved here from M5d-1 at the
+            user's request.)
+      - [ ] M5d-3: Live cells in colour (`init_pair`, `COLOR_PAIR` OR-ed in like `A_REVERSE`,
+            guarded by `has_colors()`). Done when live cells are coloured and the cursor
+            highlight still shows.
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges;
         `p` steps back a generation (asked for by the user; needs a history of past grids,
         because Life cannot be run backwards).
 - **Current milestone / where we left off:** M1 to M5c done; `test_life` and `test_step` pass.
   `print_grid` refactored: one `mvaddch`, a `chtype ch`, a `bool is_hovering`, `const`
-  parameters (reviewed: correct). Next:
-  the user picks M5d (optional) or M6.
+  parameters (reviewed: correct). M5d-1 done: `grid_create(COLS, LINES)` after `initscr()`,
+  the glider in `populate_initial_cells()`, failure path `endwin()` then `stderr`; all three
+  done checks passed. M5d-2 is next, not started. Resizing the terminal while running
+  (`KEY_RESIZE`) is not part of M5d.
 - **Decided by the user:** dead edges (not wrap-around); in the CLI every typed character steps
   a generation. ncurses: 200 ms `timeout`, `enum GameState` (RUNNING/PAUSED/OVER), Space
   toggles pause, `n` steps once (also while running, where that pass steps twice; not
@@ -45,8 +59,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   (fall-through `case` labels); Enter (`'\n'`) toggles; both are ignored while running. The
   cursor cell gets `A_REVERSE`, plus `A_BOLD` when alive.
 - **State of the code:** `src/main.c` shows a glider on a 20x10 grid, quits on `q` or `EOF`, and
-  frees the grid on every exit. `src/main_ncurses.c` creates the grid before `initscr()` (error
-  to `stderr`), sets up curses, then loops: draw, refresh, `getch()`, `switch` on the key, quit
+  frees the grid on every exit. `src/main_ncurses.c` sets up curses, creates the grid from the
+  terminal size (on failure `endwin()`, then the error to `stderr`), then loops: draw, refresh, `getch()`, `switch` on the key, quit
   if OVER, skip the step if PAUSED, else `safe_step()`.
 - **Covered with the user:** `'*'` vs `"*"` (they got `sizeof("**") == 3`), `mvprintw`
   format-string risk, `break` only leaving a `switch`, why `timeout()` before `initscr()` did
