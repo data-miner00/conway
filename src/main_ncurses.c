@@ -48,6 +48,8 @@ static void safe_step(Grid *grid) {
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
+
+    // make this configurable
     const int Width = 20;
     const int Height = 10;
 
@@ -112,14 +114,14 @@ int main(int argc, char *argv[]) {
         case 's':
         case 'j':
         case KEY_DOWN:
-            if (state == GAME_STATE_PAUSED && cursor.y < Height - 1) {
+            if (state == GAME_STATE_PAUSED && cursor.y < grid->height - 1) {
                 cursor.y += 1;
             }
             break;
         case 'd':
         case 'l':
         case KEY_RIGHT:
-            if (state == GAME_STATE_PAUSED && cursor.x < Width - 1) {
+            if (state == GAME_STATE_PAUSED && cursor.x < grid->width - 1) {
                 cursor.x += 1;
             }
             break;
