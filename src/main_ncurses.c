@@ -17,22 +17,24 @@ typedef struct Point {
     int y;
 } point_t;
 
-static void print_grid(Grid *grid, point_t *cursor) {
+static void print_grid(const Grid *grid, const point_t *cursor) {
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
+            chtype ch;
+            bool is_hovering = x == cursor->x && y == cursor->y;
             if (grid_get(grid, x, y)) {
-                if (x == cursor->x && y == cursor->y) {
-                    mvaddch(y, x, '*' | A_REVERSE | A_BOLD);
-                } else {
-                    mvaddch(y, x, '*');
+                ch = '*';
+                if (is_hovering) {
+                    ch |= A_REVERSE | A_BOLD;
                 }
             } else {
-                if (x == cursor->x && y == cursor->y) {
-                    mvaddch(y, x, ' ' | A_REVERSE);
-                } else {
-                    mvaddch(y, x, ' ');
+                ch = ' ';
+                if (is_hovering) {
+                    ch |= A_REVERSE;
                 }
             }
+
+            mvaddch(y, x, ch);
         }
     }
 }
