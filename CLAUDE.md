@@ -37,9 +37,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
         because Life cannot be run backwards).
 - **Current milestone / where we left off:** M1 to M5b done; `test_life` and `test_step` pass.
   M5c: cursor movement and the Enter toggle work (blinker check passed). Last step: the `x`
-  hides whether the cell under it is alive. Options offered: different characters, the
-  terminal's own cursor via `move()`, or `A_REVERSE` OR-ed into the character; waiting on the
-  user's choice.
+  hides whether the cell under it is alive. The user's fix: draw the cursor cell with
+  `A_REVERSE` (plus `A_BOLD` on live cells) OR-ed into the character (bit flags explained).
+  Reviewed: correct; waiting on the user's on-screen check to tick M5c.
 - **Decided by the user:** dead edges (not wrap-around); in the CLI every typed character steps
   a generation. ncurses: 200 ms `timeout`, `enum GameState` (RUNNING/PAUSED/OVER), Space
   toggles pause, `n` steps once (also while running, where that pass steps twice; not

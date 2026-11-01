@@ -22,13 +22,13 @@ static void print_grid(Grid *grid, point_t *cursor) {
         for (int x = 0; x < grid->width; x++) {
             if (grid_get(grid, x, y)) {
                 if (x == cursor->x && y == cursor->y) {
-                    mvaddch(y, x, 'x');
+                    mvaddch(y, x, '*' | A_REVERSE | A_BOLD);
                 } else {
                     mvaddch(y, x, '*');
                 }
             } else {
                 if (x == cursor->x && y == cursor->y) {
-                    mvaddch(y, x, 'x');
+                    mvaddch(y, x, ' ' | A_REVERSE);
                 } else {
                     mvaddch(y, x, ' ');
                 }
