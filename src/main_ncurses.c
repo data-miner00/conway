@@ -48,8 +48,10 @@ static void safe_step(Grid *grid) {
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
+    const int Width = 20;
+    const int Height = 10;
 
-    Grid *grid = grid_create(20, 10);
+    Grid *grid = grid_create(Width, Height);
     if (grid == NULL) {
         fprintf(stderr, "Failed to create grid\n");
         return 1;
@@ -96,28 +98,28 @@ int main(int argc, char *argv[]) {
         case 'w':
         case 'k':
         case KEY_UP:
-            if (state == GAME_STATE_PAUSED) {
+            if (state == GAME_STATE_PAUSED && cursor.y > 0) {
                 cursor.y -= 1;
             }
             break;
         case 'a':
         case 'h':
         case KEY_LEFT:
-            if (state == GAME_STATE_PAUSED) {
+            if (state == GAME_STATE_PAUSED && cursor.x > 0) {
                 cursor.x -= 1;
             }
             break;
         case 's':
         case 'j':
         case KEY_DOWN:
-            if (state == GAME_STATE_PAUSED) {
+            if (state == GAME_STATE_PAUSED && cursor.y < Height - 1) {
                 cursor.y += 1;
             }
             break;
         case 'd':
         case 'l':
         case KEY_RIGHT:
-            if (state == GAME_STATE_PAUSED) {
+            if (state == GAME_STATE_PAUSED && cursor.x < Width - 1) {
                 cursor.x += 1;
             }
             break;
