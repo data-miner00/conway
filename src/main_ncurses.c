@@ -70,6 +70,7 @@ int main(int argc, char *argv[]) {
     start_color();          // enable colors
 
     enum GameState state = GAME_STATE_RUNNING;
+    bool isHighlightMode = false;
 
     Grid *grid = grid_create(COLS, LINES);
     if (grid == NULL) {
@@ -105,6 +106,10 @@ int main(int argc, char *argv[]) {
         case KEY_UP:
             if (state == GAME_STATE_PAUSED && cursor.y > 0) {
                 cursor.y -= 1;
+
+                if (isHighlightMode) {
+                    grid_set(grid, cursor.x, cursor.y, !grid_get(grid, cursor.x, cursor.y));
+                }
             }
             break;
         case 'a':
@@ -112,6 +117,10 @@ int main(int argc, char *argv[]) {
         case KEY_LEFT:
             if (state == GAME_STATE_PAUSED && cursor.x > 0) {
                 cursor.x -= 1;
+
+                if (isHighlightMode) {
+                    grid_set(grid, cursor.x, cursor.y, !grid_get(grid, cursor.x, cursor.y));
+                }
             }
             break;
         case 's':
@@ -119,6 +128,9 @@ int main(int argc, char *argv[]) {
         case KEY_DOWN:
             if (state == GAME_STATE_PAUSED && cursor.y < grid->height - 1) {
                 cursor.y += 1;
+                if (isHighlightMode) {
+                    grid_set(grid, cursor.x, cursor.y, !grid_get(grid, cursor.x, cursor.y));
+                }
             }
             break;
         case 'd':
@@ -126,6 +138,14 @@ int main(int argc, char *argv[]) {
         case KEY_RIGHT:
             if (state == GAME_STATE_PAUSED && cursor.x < grid->width - 1) {
                 cursor.x += 1;
+                if (isHighlightMode) {
+                    grid_set(grid, cursor.x, cursor.y, !grid_get(grid, cursor.x, cursor.y));
+                }
+            }
+            break;
+        case 'v':
+            if (state == GAME_STATE_PAUSED) {
+                isHighlightMode = !isHighlightMode;
             }
             break;
         // case KEY_ENTER: this does not work becoz it is the keypad's enter key
