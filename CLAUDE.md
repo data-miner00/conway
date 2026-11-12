@@ -35,8 +35,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
             when different terminal sizes give different boards, the cursor reaches the
             bottom-right cell, and a `grid_create` failure still prints its message on a
             restored terminal.
-      - [ ] M5d-2: Make the board one row shorter and put a status line on the freed bottom
-            row: RUNNING/PAUSED, a generation counter, key help. Done when it changes on Space
+      - [x] M5d-2: Make the board two rows shorter (the user changed it from one) and use the
+            freed bottom rows for key help and a status line: RUNNING/PAUSED, a generation
+            counter. Done when it changes on Space
             and the counter climbs while running. (Freeing the row moved here from M5d-1 at the
             user's request.)
       - [ ] M5d-3: Live cells in colour (`init_pair`, `COLOR_PAIR` OR-ed in like `A_REVERSE`,
@@ -49,8 +50,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   `print_grid` refactored: one `mvaddch`, a `chtype ch`, a `bool is_hovering`, `const`
   parameters (reviewed: correct). M5d-1 done: `grid_create(COLS, LINES)` after `initscr()`,
   the glider in `populate_initial_cells()`, failure path `endwin()` then `stderr`; all three
-  done checks passed. M5d-2 is next, not started. Resizing the terminal while running
-  (`KEY_RESIZE`) is not part of M5d.
+  done checks passed. Highlight mode added by the user: `v` (only while paused) toggles it, and
+  while it is on every cursor move toggles the cell it lands on. M5d-2 done (user's choice:
+  two rows, not one): grid is `LINES - 2` tall, short help text on row `LINES - 2`, status +
+  generation on the left of `LINES - 1`, highlight ON/OFF on the right; drawn after `clear()`
+  each pass; `long generation` starts at 0 (the starting pattern) and goes up next to both
+  `safe_step()` calls. Done check confirmed by the user; builds clean, format-check passes.
+  M5d-3 (colours) is next, not started. Resizing the terminal while running (`KEY_RESIZE`) is
+  not part of M5d.
 - **Decided by the user:** dead edges (not wrap-around); in the CLI every typed character steps
   a generation. ncurses: 200 ms `timeout`, `enum GameState` (RUNNING/PAUSED/OVER), Space
   toggles pause, `n` steps once (also while running, where that pass steps twice; not

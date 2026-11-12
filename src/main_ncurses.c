@@ -71,8 +71,9 @@ int main(int argc, char *argv[]) {
 
     enum GameState state = GAME_STATE_RUNNING;
     bool isHighlightMode = false;
+    long generation = 0;
 
-    Grid *grid = grid_create(COLS, LINES);
+    Grid *grid = grid_create(COLS, LINES - 2); // leave last 2 lines for status bar
     if (grid == NULL) {
         endwin();
         fprintf(stderr, "Failed to create grid\n");
@@ -83,6 +84,10 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         clear();
+        mvprintw(LINES - 2, 0, "(Q)uit, (SPC) pause/resume, (N)ext, (V) highlight");
+        mvprintw(LINES - 1, COLS - 20, "Highlight: %s", isHighlightMode ? "ON" : "OFF");
+        mvprintw(LINES - 1, 0, "Status: %s, Generation: %ld",
+                 state == GAME_STATE_PAUSED ? "PAUSED" : "RUNNING", generation);
         print_grid(grid, &cursor);
         refresh();
         int ch = getch();
@@ -99,6 +104,7 @@ int main(int argc, char *argv[]) {
             }
             break;
         case 'n':
+            generation++;
             safe_step(grid);
             break;
         case 'w':
@@ -166,6 +172,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
+        generation++;
         safe_step(grid);
     }
 
