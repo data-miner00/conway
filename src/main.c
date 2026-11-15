@@ -13,8 +13,14 @@ static void print_grid(const Grid *grid) {
     }
 }
 
+static void clear_screen() {
+    // clear the screen
+    printf("\033[2J");
+}
+
 int main(int argc, char **argv) {
     srand(time(NULL));
+    clear_screen();
     printf("Welcome to Conway's Game of Life!\n");
 
     Grid *grid = grid_create(20, 10);
@@ -39,8 +45,7 @@ int main(int argc, char **argv) {
     }
 
     while (true) {
-        // clear the screen
-        printf("\033[2J");
+        clear_screen();
 
         bool ok = grid_step(grid);
         if (!ok) {
