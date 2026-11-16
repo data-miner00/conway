@@ -46,7 +46,7 @@ static void print_grid(const Grid *grid, const point_t *cursor) {
             } else {
                 ch = ' ';
                 if (is_hovering) {
-                    ch |= A_REVERSE ;
+                    ch |= A_REVERSE;
                 }
             }
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     curs_set(1);            // primary cursor
 
     if (has_colors()) {
-        start_color();          // enable colors
+        start_color();        // enable colors
         use_default_colors(); // allow default terminal background color
         init_pair(PAIR_COUNT_1, COLOR_BLUE, -1);
         init_pair(PAIR_COUNT_2, COLOR_GREEN, -1);

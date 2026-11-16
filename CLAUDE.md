@@ -19,7 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - [x] M3: Step to the next generation using a second buffer. Done when tests pass for a block
         (still), a blinker (period 2) and a glider (moved after 4 steps).
   - [x] M4: CLI frontend: print the grid, Enter advances one generation, `q` quits (`make run`).
-  - [ ] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
+  - [x] M5: ncurses frontend: animated run, pause/step, move a cursor to toggle cells (`make rn`).
         Steps:
     - [x] M5a: Draw the grid with ncurses; any key steps one generation, `q` quits. Done when
           `make rn` shows the glider moving one step per key press and the terminal is normal
@@ -29,7 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
     - [x] M5c: Arrow keys, `h`/`j`/`k`/`l` and `w`/`a`/`s`/`d` move a cursor that stays on the
           board; Enter toggles the cell under it; moving and toggling only work while paused;
           the cursor cell is drawn in reverse video so its state stays visible.
-    - [ ] M5d (optional, chosen by the user): grid sized to the terminal, a status line,
+    - [x] M5d (optional, chosen by the user): grid sized to the terminal, a status line,
           colours. Steps (Claude's draft, not yet confirmed by the user):
       - [x] M5d-1: Read the terminal size after `initscr()` and make the grid fill it. Done
             when different terminal sizes give different boards, the cursor reaches the
@@ -40,7 +40,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
             counter. Done when it changes on Space
             and the counter climbs while running. (Freeing the row moved here from M5d-1 at the
             user's request.)
-      - [ ] M5d-3: Live cells in colour (`init_pair`, `COLOR_PAIR` OR-ed in like `A_REVERSE`,
+      - [x] M5d-3: Live cells in colour (`init_pair`, `COLOR_PAIR` OR-ed in like `A_REVERSE`,
             guarded by `has_colors()`). Done when live cells are coloured and the cursor
             highlight still shows.
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges;
@@ -53,18 +53,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   done checks passed. Highlight mode added by the user: `v` (only while paused) toggles it, and
   while it is on every cursor move toggles the cell it lands on. M5d-2 done (user's choice:
   two rows, not one): grid is `LINES - 2` tall, short help text on row `LINES - 2`, status +
-  generation on the left of `LINES - 1`, highlight ON/OFF on the right; drawn after `clear()`
-  each pass; `long generation` starts at 0 (the starting pattern) and goes up next to both
-  `safe_step()` calls. Done check confirmed by the user; builds clean, format-check passes.
-  M5d-3 (colours) is next, not started. Resizing the terminal while running (`KEY_RESIZE`) is
-  not part of M5d.
+  generation on the left of `LINES - 1`, highlight ON/OFF on the right; `long generation`
+  starts at 0 (the starting pattern) and goes up next to both `safe_step()` calls. M5d-3 done
+  (done check confirmed by the user): `start_color()`, `use_default_colors()` and the
+  `init_pair` calls sit inside `if (has_colors())`; live cells get a random pair from 1 to 3
+  (blue/green/red, background `-1`) each time they are drawn; the loop uses `erase()` instead of
+  `clear()`, which fixed the flicker. Builds without warnings, but `make format-check` fails on
+  two lines (`A_REVERSE ;` and the comment after `start_color();`); `make format` fixes both.
+  **M1 to M5 are done. M6 (stretch) is next, not started, and not yet split into steps.**
+  Resizing the terminal while running (`KEY_RESIZE`) was not part of M5d.
 - **Decided by the user:** dead edges (not wrap-around); in the CLI every typed character steps
   a generation. ncurses: 200 ms `timeout`, `enum GameState` (RUNNING/PAUSED/OVER), Space
   toggles pause, `n` steps once (also while running, where that pass steps twice; not
   revisited), `q` quits; `safe_step()` frees the grid, calls `endwin()` and `exit(1)` if
   `grid_step` fails (correct as is, the user's design). Cursor: arrows, hjkl and wasd all move it
   (fall-through `case` labels); Enter (`'\n'`) toggles; both are ignored while running. The
-  cursor cell gets `A_REVERSE`, plus `A_BOLD` when alive.
+  cursor cell gets `A_REVERSE`, plus `A_BOLD` when alive. Colours: a random colour per live
+  cell on the terminal's own background (the user's terminal uses Catppuccin).
 - **State of the code:** `src/main.c` shows a glider on a 20x10 grid, quits on `q` or `EOF`, and
   frees the grid on every exit. `src/main_ncurses.c` sets up curses, creates the grid from the
   terminal size (on failure `endwin()`, then the error to `stderr`), then loops: draw, refresh, `getch()`, `switch` on the key, quit
@@ -74,11 +79,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   nothing (`stdscr` is a NULL global), globals zero-initialised vs. uninitialised locals,
   `#define` as text replacement, fall-through `case` labels, `exit()` vs `return`, Enter
   arriving as `'\n'` not `KEY_ENTER`, `chtype` attribute bits and `|`/`|=`, `const` pointer
-  parameters.
+  parameters, colour pairs and `COLOR_BLACK` being palette slot 0 (gray in Catppuccin),
+  `use_default_colors()` with `-1`, `clear()` (full repaint, flickers) vs `erase()`.
 - **Open / optional:** offered, not yet accepted: `-Wall -Wextra` on the `Conway` and
   `ConwayNcurses` targets. `main.c` tidy-ups: the print/read/quit block is duplicated before the
   loop; the screen clear does not move the cursor home. On the 20x10 grid the glider settles
-  into a 2x2 block at the bottom edge after ~6 s; correct with dead edges, not a bug.
+  into a 2x2 block at the bottom edge after ~6 s; correct with dead edges, not a bug. From the
+  M5d-3 review, not yet answered: a new random colour on every draw makes a paused board
+  twinkle (design question: keep it, or store each cell's colour?); pairs 4 to 8 are unused
+  and still use `COLOR_BLACK` (7 and 8 are the same); the `3` in `rand() % 3` must match the
+  number of pairs (hinted: a last enum member as the count); `PAIR_COUNT_n` names read like
+  counts; `clear_screen()` in `main.c` should be `(void)`.
 
 ## How Claude should help (tutor mode)
 
