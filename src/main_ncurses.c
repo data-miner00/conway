@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
     populate_initial_cells(grid);
 
     while (true) {
-        clear();
+        erase();
         mvprintw(LINES - 2, 0, "(Q)uit, (SPC) pause/resume, (N)ext, (V) highlight");
         mvprintw(LINES - 1, COLS - 20, "Highlight: %s", isHighlightMode ? "ON" : "OFF");
         mvprintw(LINES - 1, 0, "Status: %s, Generation: %ld",
