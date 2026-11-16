@@ -17,6 +17,17 @@ typedef struct Point {
     int y;
 } point_t;
 
+enum {
+    PAIR_COUNT_1 = 1,
+    PAIR_COUNT_2,
+    PAIR_COUNT_3,
+    PAIR_COUNT_4,
+    PAIR_COUNT_5,
+    PAIR_COUNT_6,
+    PAIR_COUNT_7,
+    PAIR_COUNT_8,
+};
+
 static void print_grid(const Grid *grid, const point_t *cursor) {
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
@@ -27,10 +38,15 @@ static void print_grid(const Grid *grid, const point_t *cursor) {
                 if (is_hovering) {
                     ch |= A_REVERSE | A_BOLD;
                 }
+
+                if (has_colors()) {
+                    int random_pair = (rand() % 3) + 1;
+                    ch |= COLOR_PAIR(random_pair);
+                }
             } else {
                 ch = ' ';
                 if (is_hovering) {
-                    ch |= A_REVERSE;
+                    ch |= A_REVERSE ;
                 }
             }
 
@@ -67,7 +83,19 @@ int main(int argc, char *argv[]) {
     noecho();               // don't auto-print typed characters
     keypad(stdscr, TRUE);   // let getch() return arrow keys etc. as single KEY_* constants
     curs_set(1);            // primary cursor
-    start_color();          // enable colors
+
+    if (has_colors()) {
+        start_color();          // enable colors
+        use_default_colors(); // allow default terminal background color
+        init_pair(PAIR_COUNT_1, COLOR_BLUE, -1);
+        init_pair(PAIR_COUNT_2, COLOR_GREEN, -1);
+        init_pair(PAIR_COUNT_3, COLOR_RED, -1);
+        init_pair(PAIR_COUNT_4, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(PAIR_COUNT_5, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(PAIR_COUNT_6, COLOR_CYAN, COLOR_BLACK);
+        init_pair(PAIR_COUNT_7, COLOR_WHITE, COLOR_BLACK);
+        init_pair(PAIR_COUNT_8, COLOR_WHITE, COLOR_BLACK);
+    }
 
     enum GameState state = GAME_STATE_RUNNING;
     bool isHighlightMode = false;
