@@ -30,6 +30,13 @@ void grid_set(Grid *grid, int x, int y, bool alive);
 // board count as dead. The cell at (x, y) itself is not counted.
 int grid_count_neighbours(const Grid *grid, int x, int y);
 
+// Makes every cell alive or dead at random, whatever it was before: each cell comes alive with
+// a `percent` in 100 chance. `percent` should be between 0 and 100; 0 leaves every cell dead
+// and 100 makes every cell alive.
+// Uses rand(). It does not call srand(): the program calls srand() once at start-up, so each
+// run gets different boards.
+void grid_fill_random(Grid *grid, int percent);
+
 // Advances the grid by one generation. Every cell's new state is worked out from the grid as it
 // was before the call:
 //   - a live cell with 2 or 3 live neighbours stays alive

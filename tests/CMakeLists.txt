@@ -30,3 +30,17 @@ target_include_directories(
 )
 
 add_test(NAME test_step COMMAND test_step)
+
+add_executable(
+  test_random
+
+  test_random.c
+  ${CMAKE_SOURCE_DIR}/src/life.c
+)
+
+target_include_directories(
+  test_random
+  PRIVATE ${CMAKE_SOURCE_DIR}/src
+)
+
+add_test(NAME test_random COMMAND test_random)

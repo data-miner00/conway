@@ -109,6 +109,7 @@ int main(int argc, char *argv[]) {
     }
 
     populate_initial_cells(grid);
+    grid_fill_random(grid, 20);
 
     while (true) {
         erase();

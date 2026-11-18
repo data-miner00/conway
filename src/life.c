@@ -124,3 +124,16 @@ bool grid_step(Grid *grid) {
 
     return true;
 }
+
+void grid_fill_random(Grid *grid, int percent) {
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            int r = rand() % 100;
+            if (r < percent) {
+                grid_set(grid, x, y, true);
+            } else {
+                grid_set(grid, x, y, false);
+            }
+        }
+    }
+}

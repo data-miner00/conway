@@ -45,7 +45,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
             highlight still shows.
   - [ ] M6 (stretch): load a starting pattern from a file; random fill; wrap-around edges;
         `p` steps back a generation (asked for by the user; needs a history of past grids,
-        because Life cannot be run backwards).
+        because Life cannot be run backwards). Random fill first (user's choice); steps:
+    - [x] M6a-1: `grid_fill_random(grid, percent)` in `life.c` (declared in `life.h`; the user
+          chose a percent parameter). Done when `test_random` passes.
+    - [ ] M6a-2: `r` refills the ncurses board, only while paused (user's choice). Done when
+          each `r` while paused gives a new board, `r` does nothing while running, and two runs
+          of the program give different boards.
 - **Current milestone / where we left off:** M1 to M5c done; `test_life` and `test_step` pass.
   `print_grid` refactored: one `mvaddch`, a `chtype ch`, a `bool is_hovering`, `const`
   parameters (reviewed: correct). M5d-1 done: `grid_create(COLS, LINES)` after `initscr()`,
@@ -58,9 +63,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   (done check confirmed by the user): `start_color()`, `use_default_colors()` and the
   `init_pair` calls sit inside `if (has_colors())`; live cells get a random pair from 1 to 3
   (blue/green/red, background `-1`) each time they are drawn; the loop uses `erase()` instead of
-  `clear()`, which fixed the flicker. Builds without warnings, but `make format-check` fails on
-  two lines (`A_REVERSE ;` and the comment after `start_color();`); `make format` fixes both.
-  **M1 to M5 are done. M6 (stretch) is next, not started, and not yet split into steps.**
+  `clear()`, which fixed the flicker. Builds without warnings.
+  **M1 to M5 are done. M6 started with random fill: M6a-1 done, M6a-2 (`r` key) is next.**
+  `grid_fill_random` in `life.c` uses `rand() % 100 < percent` with `grid_set` in an
+  `if`/`else` (first try had `r > percent`, found by reasoning through 0/25/100 by hand);
+  `test_random` passes. Optional suggestion offered: the `if`/`else` can be one `grid_set`
+  call with the comparison as the value.
   Resizing the terminal while running (`KEY_RESIZE`) was not part of M5d.
 - **Decided by the user:** dead edges (not wrap-around); in the CLI every typed character steps
   a generation. ncurses: 200 ms `timeout`, `enum GameState` (RUNNING/PAUSED/OVER), Space
@@ -80,7 +88,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   `#define` as text replacement, fall-through `case` labels, `exit()` vs `return`, Enter
   arriving as `'\n'` not `KEY_ENTER`, `chtype` attribute bits and `|`/`|=`, `const` pointer
   parameters, colour pairs and `COLOR_BLACK` being palette slot 0 (gray in Catppuccin),
-  `use_default_colors()` with `-1`, `clear()` (full repaint, flickers) vs `erase()`.
+  `use_default_colors()` with `-1`, `clear()` (full repaint, flickers) vs `erase()`,
+  `rand() % 100` and checking a condition by hand at the edge values.
 - **Open / optional:** offered, not yet accepted: `-Wall -Wextra` on the `Conway` and
   `ConwayNcurses` targets. `main.c` tidy-ups: the print/read/quit block is duplicated before the
   loop; the screen clear does not move the cursor home. On the 20x10 grid the glider settles
@@ -149,7 +158,7 @@ If the ncurses program exits uncleanly and the terminal is garbled, run `reset` 
   test executable that exercises it.
 - **Tests** (`tests/`): each test is a standalone executable with its own `main()` using
   `assert()`, compiled together with the needed `src/*.c` files and registered via `add_test` in
-  `tests/CMakeLists.txt` (currently `test_life` and `test_step`). No test framework. Test logic
+  `tests/CMakeLists.txt` (currently `test_life`, `test_step` and `test_random`). No test framework. Test logic
   modules, not the frontends.
   Everything under `tests/` is built with `-Wall -Wextra` and AddressSanitizer/UBSan, so
   out-of-bounds access, reading uninitialised `bool`s and leaks fail the test.
