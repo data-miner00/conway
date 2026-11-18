@@ -29,6 +29,7 @@ add_executable(
 
   src/main_ncurses.c
   src/life.c
+  src/pattern.c
 )
 
 target_include_directories(

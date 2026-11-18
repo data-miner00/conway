@@ -55,3 +55,7 @@ To reset the build, remove it and rebuild.
 ```
 rm -rf build && make build
 ```
+
+## Links
+
+- [Conway's Game of Life Simulator & Patterns](https://www.gameoflifelab.com/))

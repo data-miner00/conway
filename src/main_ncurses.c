@@ -1,4 +1,5 @@
 #include "life.h"
+#include "pattern.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,14 +65,6 @@ static void safe_step(Grid *grid) {
     }
 }
 
-static void populate_initial_cells(Grid *grid) {
-    grid_set(grid, 1, 0, true);
-    grid_set(grid, 2, 1, true);
-    grid_set(grid, 0, 2, true);
-    grid_set(grid, 1, 2, true);
-    grid_set(grid, 2, 2, true);
-}
-
 int main(int argc, char *argv[]) {
     srand(time(NULL));
 
@@ -108,8 +101,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    populate_initial_cells(grid);
-    grid_fill_random(grid, 20);
+    // grid_fill_random(grid, 20);
+    random_glider(grid, 20);
 
     while (true) {
         erase();
