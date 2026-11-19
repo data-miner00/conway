@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     }
 
     // grid_fill_random(grid, 20);
-    random_blinker(grid, 40);
+    random_block(grid, 40);
 
     while (true) {
         erase();

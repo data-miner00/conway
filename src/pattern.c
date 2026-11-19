@@ -31,6 +31,33 @@ void specific_glider(Grid *grid, int x, int y) {
 
 }
 
+void random_block(Grid *grid, int count) {
+    if (grid->width < 2 || grid->height < 2) {
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        int random_x = rand() % (grid->width - 1);
+        int random_y = rand() % (grid->height - 1);
+
+        grid_set(grid, random_x + 0, random_y + 0, true);
+        grid_set(grid, random_x + 1, random_y + 0, true);
+        grid_set(grid, random_x + 0, random_y + 1, true);
+        grid_set(grid, random_x + 1, random_y + 1, true);
+    }
+}
+
+void specific_block(Grid *grid, int x, int y) {
+    if (grid->width < 2 || grid->height < 2) {
+        return;
+    }
+
+    grid_set(grid, x + 0, y + 0, true);
+    grid_set(grid, x + 1, y + 0, true);
+    grid_set(grid, x + 0, y + 1, true);
+    grid_set(grid, x + 1, y + 1, true);
+}
+
 void random_blinker(Grid *grid, int count) {
     if (grid->width < 3 || grid->height < 3) {
         return;
