@@ -39,3 +39,54 @@ void specific_blinker(Grid *grid, int x, int y, bool vertical) {
     }
 }
 
+void random_toad(Grid *grid, int count) {
+    if (grid->height < 4 || grid->width < 4) {
+        return;
+    }
+    
+    for (int i = 0; i < count; i++) {
+        int random_x = rand() % (grid->width - 3);
+        int random_y = rand() % (grid->height - 3);
+
+        int vertical = rand() % 2;
+
+        if (vertical) {
+            grid_set(grid, random_x + 0, random_y + 0, true);
+            grid_set(grid, random_x + 0, random_y + 1, true);
+            grid_set(grid, random_x + 0, random_y + 2, true);
+            grid_set(grid, random_x + 1, random_y + 1, true);
+            grid_set(grid, random_x + 1, random_y + 2, true);
+            grid_set(grid, random_x + 1, random_y + 3, true);
+        } else {
+            grid_set(grid, random_x + 0, random_y + 0, true);
+            grid_set(grid, random_x + 1, random_y + 0, true);
+            grid_set(grid, random_x + 2, random_y + 0, true);
+            grid_set(grid, random_x + 1, random_y + 1, true);
+            grid_set(grid, random_x + 2, random_y + 1, true);
+            grid_set(grid, random_x + 3, random_y + 1, true);
+        }
+    }
+}
+
+void specific_toad(Grid *grid, int x, int y, bool vertical) {
+    if (grid->height < 4 || grid->width < 4) {
+        return;
+    }
+
+    if (vertical) {
+        grid_set(grid, x + 0, y + 0, true);
+        grid_set(grid, x + 0, y + 1, true);
+        grid_set(grid, x + 0, y + 2, true);
+        grid_set(grid, x + 1, y + 1, true);
+        grid_set(grid, x + 1, y + 2, true);
+        grid_set(grid, x + 1, y + 3, true);
+    } else {
+        grid_set(grid, x + 0, y + 0, true);
+        grid_set(grid, x + 1, y + 0, true);
+        grid_set(grid, x + 2, y + 0, true);
+        grid_set(grid, x + 1, y + 1, true);
+        grid_set(grid, x + 2, y + 1, true);
+        grid_set(grid, x + 3, y + 1, true);
+    }
+}
+
