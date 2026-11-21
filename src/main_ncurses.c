@@ -1,5 +1,5 @@
 #include "life.h"
-#include "pattern.h"
+#include "pattern/pattern.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>

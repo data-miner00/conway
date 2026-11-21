@@ -29,7 +29,8 @@ add_executable(
 
   src/main_ncurses.c
   src/life.c
-  src/pattern.c
+  src/pattern/still.c
+  src/pattern/oscillator.c
 )
 
 target_include_directories(
