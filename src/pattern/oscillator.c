@@ -1,3 +1,4 @@
+#include "still.h"
 #include "oscillator.h"
 #include <stdlib.h>
 
@@ -90,3 +91,25 @@ void specific_toad(Grid *grid, int x, int y, bool vertical) {
     }
 }
 
+void random_beacon(Grid *grid, int count) {
+    if (grid->height < 4 || grid->width < 4) {
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        int random_x = rand() % (grid->width - 3);
+        int random_y = rand() % (grid->height - 3);
+
+        specific_block(grid, random_x, random_y);
+        specific_block(grid, random_x + 2, random_y + 2);
+    }
+}
+
+void specific_beacon(Grid *grid, int x, int y) {
+    if (grid->height < 4 || grid->width < 4) {
+        return;
+    }
+
+    specific_block(grid, x, y);
+    specific_block(grid, x + 2, y + 2);
+}
