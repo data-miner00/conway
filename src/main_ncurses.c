@@ -105,7 +105,6 @@ int main(int argc, char *argv[]) {
     // random_beacon(grid, 40);
     specific_pulsar(grid, 20, 20);
 
-
     while (true) {
         erase();
         mvprintw(LINES - 2, 0, "(Q)uit, (SPC) pause/resume, (N)ext, (V) highlight");

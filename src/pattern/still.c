@@ -28,7 +28,6 @@ void specific_glider(Grid *grid, int x, int y) {
     grid_set(grid, x + 0, y + 2, true);
     grid_set(grid, x + 1, y + 2, true);
     grid_set(grid, x + 2, y + 2, true);
-
 }
 
 void random_block(Grid *grid, int count) {
@@ -194,7 +193,8 @@ void random_eater1(Grid *grid, int count) {
         grid_set(grid, random_x + 2, random_y + 1, true);
         grid_set(grid, random_x + 2, random_y + 2, true);
         grid_set(grid, random_x + 2, random_y + 3, true);
-        grid_set(grid, random_x + 3, random_y + 3, true); // if 3 replaced with 4, will produce good generation
+        grid_set(grid, random_x + 3, random_y + 3,
+                 true); // if 3 replaced with 4, will produce good generation
     }
 }
 

@@ -1,5 +1,5 @@
-#include "still.h"
 #include "oscillator.h"
+#include "still.h"
 #include <stdlib.h>
 
 void random_blinker(Grid *grid, int count) {
@@ -44,7 +44,7 @@ void random_toad(Grid *grid, int count) {
     if (grid->height < 4 || grid->width < 4) {
         return;
     }
-    
+
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 3);
         int random_y = rand() % (grid->height - 3);
