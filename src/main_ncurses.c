@@ -1,6 +1,6 @@
 #include "life.h"
+#include "pattern/oscillator.h"
 #include "pattern/pattern.h"
-#include "pattern/still.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -103,7 +103,9 @@ int main(int argc, char *argv[]) {
     }
 
     // grid_fill_random(grid, 20);
-    random_beacon(grid, 40);
+    // random_beacon(grid, 40);
+    specific_pulsar(grid, 20, 20);
+
 
     while (true) {
         erase();
