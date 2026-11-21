@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     }
 
     // grid_fill_random(grid, 20);
-    random_tub(grid, 40);
+    random_boat(grid, 40);
 
     while (true) {
         erase();

@@ -15,6 +15,12 @@ void specific_beehive(Grid *grid, int x, int y);
 void random_tub(Grid *grid, int count);
 void specific_tub(Grid *grid, int x, int y);
 
+void random_loaf(Grid *grid, int count);
+void specific_loaf(Grid *grid, int x, int y);
+
+void random_boat(Grid *grid, int count);
+void specific_boat(Grid *grid, int x, int y);
+
 // Oscillators
 void random_blinker(Grid *grid, int count);
 void specific_blinker(Grid *grid, int x, int y, bool vertical);
