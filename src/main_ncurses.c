@@ -1,5 +1,6 @@
 #include "life.h"
 #include "pattern/pattern.h"
+#include "pattern/still.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -102,7 +103,7 @@ int main(int argc, char *argv[]) {
     }
 
     // grid_fill_random(grid, 20);
-    random_boat(grid, 40);
+    random_eater1(grid, 40);
 
     while (true) {
         erase();
