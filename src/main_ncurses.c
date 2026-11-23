@@ -102,8 +102,7 @@ int main(int argc, char *argv[]) {
     }
 
     // grid_fill_random(grid, 20);
-    // random_beacon(grid, 40);
-    specific_pulsar(grid, 20, 20);
+    random_pentadelcathon(grid, 40);
 
     while (true) {
         erase();

@@ -14,4 +14,7 @@ void specific_beacon(Grid *grid, int x, int y);
 void random_pulsar(Grid *grid, int count);
 void specific_pulsar(Grid *grid, int x, int y);
 
+void random_pentadelcathon(Grid *grid, int count);
+void specific_pentadelcathon(Grid *grid, int x, int y, bool vertical);
+
 #endif // OSCILLATOR_H

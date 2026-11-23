@@ -234,3 +234,77 @@ void specific_pulsar(Grid *grid, int x, int y) {
     grid_set(grid, x + 12, y + 9, true);
     grid_set(grid, x + 12, y + 10, true);
 }
+
+void random_pentadelcathon(Grid *grid, int count) {
+    if (grid->width < 10 || grid->height < 10) {
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        int random_x = rand() % (grid->width - 2);
+        int random_y = rand() % (grid->height - 2);
+        int vertical = rand() % 2;
+
+        if (vertical) {
+            grid_set(grid, random_x + 1, random_y + 0, true);
+            grid_set(grid, random_x + 1, random_y + 1, true);
+            grid_set(grid, random_x + 0, random_y + 2, true);
+            grid_set(grid, random_x + 2, random_y + 2, true);
+            grid_set(grid, random_x + 1, random_y + 3, true);
+            grid_set(grid, random_x + 1, random_y + 4, true);
+            grid_set(grid, random_x + 1, random_y + 5, true);
+            grid_set(grid, random_x + 1, random_y + 6, true);
+            grid_set(grid, random_x + 0, random_y + 7, true);
+            grid_set(grid, random_x + 2, random_y + 7, true);
+            grid_set(grid, random_x + 1, random_y + 8, true);
+            grid_set(grid, random_x + 1, random_y + 9, true);
+        } else {
+            grid_set(grid, random_x + 0, random_y + 1, true);
+            grid_set(grid, random_x + 1, random_y + 1, true);
+            grid_set(grid, random_x + 2, random_y + 0, true);
+            grid_set(grid, random_x + 2, random_y + 2, true);
+            grid_set(grid, random_x + 3, random_y + 1, true);
+            grid_set(grid, random_x + 4, random_y + 1, true);
+            grid_set(grid, random_x + 5, random_y + 1, true);
+            grid_set(grid, random_x + 6, random_y + 1, true);
+            grid_set(grid, random_x + 7, random_y + 0, true);
+            grid_set(grid, random_x + 7, random_y + 2, true);
+            grid_set(grid, random_x + 8, random_y + 1, true);
+            grid_set(grid, random_x + 9, random_y + 1, true);
+        }
+    }
+}
+
+void specific_pentadelcathon(Grid *grid, int x, int y, bool vertical) {
+    if (grid->width < 10 || grid->height < 10) {
+        return;
+    }
+
+    if (vertical) {
+        grid_set(grid, x + 1, y + 0, true);
+        grid_set(grid, x + 1, y + 1, true);
+        grid_set(grid, x + 0, y + 2, true);
+        grid_set(grid, x + 2, y + 2, true);
+        grid_set(grid, x + 1, y + 3, true);
+        grid_set(grid, x + 1, y + 4, true);
+        grid_set(grid, x + 1, y + 5, true);
+        grid_set(grid, x + 1, y + 6, true);
+        grid_set(grid, x + 0, y + 7, true);
+        grid_set(grid, x + 2, y + 7, true);
+        grid_set(grid, x + 1, y + 8, true);
+        grid_set(grid, x + 1, y + 9, true);
+    } else {
+        grid_set(grid, x + 0, y + 1, true);
+        grid_set(grid, x + 1, y + 1, true);
+        grid_set(grid, x + 2, y + 0, true);
+        grid_set(grid, x + 2, y + 2, true);
+        grid_set(grid, x + 3, y + 1, true);
+        grid_set(grid, x + 4, y + 1, true);
+        grid_set(grid, x + 5, y + 1, true);
+        grid_set(grid, x + 6, y + 1, true);
+        grid_set(grid, x + 7, y + 0, true);
+        grid_set(grid, x + 7, y + 2, true);
+        grid_set(grid, x + 8, y + 1, true);
+        grid_set(grid, x + 9, y + 1, true);
+    }
+}
