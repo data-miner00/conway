@@ -3,24 +3,12 @@
 #include <stdlib.h>
 
 void random_blinker(Grid *grid, int count) {
-    if (grid->width < 3 || grid->height < 3) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 2);
         int random_y = rand() % (grid->height - 2);
         int vertical = rand() % 2;
 
-        if (vertical) {
-            grid_set(grid, random_x, random_y + 0, true);
-            grid_set(grid, random_x, random_y + 1, true);
-            grid_set(grid, random_x, random_y + 2, true);
-        } else {
-            grid_set(grid, random_x + 0, random_y, true);
-            grid_set(grid, random_x + 1, random_y, true);
-            grid_set(grid, random_x + 2, random_y, true);
-        }
+        specific_blinker(grid, random_x, random_y, vertical);
     }
 }
 
@@ -41,31 +29,12 @@ void specific_blinker(Grid *grid, int x, int y, bool vertical) {
 }
 
 void random_toad(Grid *grid, int count) {
-    if (grid->height < 4 || grid->width < 4) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 3);
         int random_y = rand() % (grid->height - 3);
-
         int vertical = rand() % 2;
 
-        if (vertical) {
-            grid_set(grid, random_x + 0, random_y + 0, true);
-            grid_set(grid, random_x + 0, random_y + 1, true);
-            grid_set(grid, random_x + 0, random_y + 2, true);
-            grid_set(grid, random_x + 1, random_y + 1, true);
-            grid_set(grid, random_x + 1, random_y + 2, true);
-            grid_set(grid, random_x + 1, random_y + 3, true);
-        } else {
-            grid_set(grid, random_x + 0, random_y + 0, true);
-            grid_set(grid, random_x + 1, random_y + 0, true);
-            grid_set(grid, random_x + 2, random_y + 0, true);
-            grid_set(grid, random_x + 1, random_y + 1, true);
-            grid_set(grid, random_x + 2, random_y + 1, true);
-            grid_set(grid, random_x + 3, random_y + 1, true);
-        }
+        specific_toad(grid, random_x, random_y, vertical);
     }
 }
 
@@ -92,16 +61,11 @@ void specific_toad(Grid *grid, int x, int y, bool vertical) {
 }
 
 void random_beacon(Grid *grid, int count) {
-    if (grid->height < 4 || grid->width < 4) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 3);
         int random_y = rand() % (grid->height - 3);
 
-        specific_block(grid, random_x, random_y);
-        specific_block(grid, random_x + 2, random_y + 2);
+        specific_beacon(grid, random_x, random_y);
     }
 }
 
@@ -115,65 +79,11 @@ void specific_beacon(Grid *grid, int x, int y) {
 }
 
 void random_pulsar(Grid *grid, int count) {
-    if (grid->height < 13 || grid->width < 13) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 12);
         int random_y = rand() % (grid->height - 12);
 
-        grid_set(grid, random_x + 2, random_y + 0, true);
-        grid_set(grid, random_x + 3, random_y + 0, true);
-        grid_set(grid, random_x + 4, random_y + 0, true);
-        grid_set(grid, random_x + 2, random_y + 5, true);
-        grid_set(grid, random_x + 3, random_y + 5, true);
-        grid_set(grid, random_x + 4, random_y + 5, true);
-        grid_set(grid, random_x + 0, random_y + 2, true);
-        grid_set(grid, random_x + 0, random_y + 3, true);
-        grid_set(grid, random_x + 0, random_y + 4, true);
-        grid_set(grid, random_x + 5, random_y + 2, true);
-        grid_set(grid, random_x + 5, random_y + 3, true);
-        grid_set(grid, random_x + 5, random_y + 4, true);
-
-        grid_set(grid, random_x + 8, random_y + 0, true);
-        grid_set(grid, random_x + 9, random_y + 0, true);
-        grid_set(grid, random_x + 10, random_y + 0, true);
-        grid_set(grid, random_x + 12, random_y + 2, true);
-        grid_set(grid, random_x + 12, random_y + 3, true);
-        grid_set(grid, random_x + 12, random_y + 4, true);
-        grid_set(grid, random_x + 7, random_y + 2, true);
-        grid_set(grid, random_x + 7, random_y + 3, true);
-        grid_set(grid, random_x + 7, random_y + 4, true);
-        grid_set(grid, random_x + 8, random_y + 5, true);
-        grid_set(grid, random_x + 9, random_y + 5, true);
-        grid_set(grid, random_x + 10, random_y + 5, true);
-
-        grid_set(grid, random_x + 2, random_y + 7, true);
-        grid_set(grid, random_x + 3, random_y + 7, true);
-        grid_set(grid, random_x + 4, random_y + 7, true);
-        grid_set(grid, random_x + 2, random_y + 12, true);
-        grid_set(grid, random_x + 3, random_y + 12, true);
-        grid_set(grid, random_x + 4, random_y + 12, true);
-        grid_set(grid, random_x + 0, random_y + 8, true);
-        grid_set(grid, random_x + 0, random_y + 9, true);
-        grid_set(grid, random_x + 0, random_y + 10, true);
-        grid_set(grid, random_x + 5, random_y + 8, true);
-        grid_set(grid, random_x + 5, random_y + 9, true);
-        grid_set(grid, random_x + 5, random_y + 10, true);
-
-        grid_set(grid, random_x + 8, random_y + 7, true);
-        grid_set(grid, random_x + 9, random_y + 7, true);
-        grid_set(grid, random_x + 10, random_y + 7, true);
-        grid_set(grid, random_x + 8, random_y + 12, true);
-        grid_set(grid, random_x + 9, random_y + 12, true);
-        grid_set(grid, random_x + 10, random_y + 12, true);
-        grid_set(grid, random_x + 7, random_y + 8, true);
-        grid_set(grid, random_x + 7, random_y + 9, true);
-        grid_set(grid, random_x + 7, random_y + 10, true);
-        grid_set(grid, random_x + 12, random_y + 8, true);
-        grid_set(grid, random_x + 12, random_y + 9, true);
-        grid_set(grid, random_x + 12, random_y + 10, true);
+        specific_pulsar(grid, random_x, random_y);
     }
 }
 
@@ -236,42 +146,13 @@ void specific_pulsar(Grid *grid, int x, int y) {
 }
 
 void random_pentadelcathon(Grid *grid, int count) {
-    if (grid->width < 10 || grid->height < 10) {
-        return;
-    }
 
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 2);
         int random_y = rand() % (grid->height - 2);
         int vertical = rand() % 2;
 
-        if (vertical) {
-            grid_set(grid, random_x + 1, random_y + 0, true);
-            grid_set(grid, random_x + 1, random_y + 1, true);
-            grid_set(grid, random_x + 0, random_y + 2, true);
-            grid_set(grid, random_x + 2, random_y + 2, true);
-            grid_set(grid, random_x + 1, random_y + 3, true);
-            grid_set(grid, random_x + 1, random_y + 4, true);
-            grid_set(grid, random_x + 1, random_y + 5, true);
-            grid_set(grid, random_x + 1, random_y + 6, true);
-            grid_set(grid, random_x + 0, random_y + 7, true);
-            grid_set(grid, random_x + 2, random_y + 7, true);
-            grid_set(grid, random_x + 1, random_y + 8, true);
-            grid_set(grid, random_x + 1, random_y + 9, true);
-        } else {
-            grid_set(grid, random_x + 0, random_y + 1, true);
-            grid_set(grid, random_x + 1, random_y + 1, true);
-            grid_set(grid, random_x + 2, random_y + 0, true);
-            grid_set(grid, random_x + 2, random_y + 2, true);
-            grid_set(grid, random_x + 3, random_y + 1, true);
-            grid_set(grid, random_x + 4, random_y + 1, true);
-            grid_set(grid, random_x + 5, random_y + 1, true);
-            grid_set(grid, random_x + 6, random_y + 1, true);
-            grid_set(grid, random_x + 7, random_y + 0, true);
-            grid_set(grid, random_x + 7, random_y + 2, true);
-            grid_set(grid, random_x + 8, random_y + 1, true);
-            grid_set(grid, random_x + 9, random_y + 1, true);
-        }
+        specific_pentadelcathon(grid, random_x, random_y, vertical);
     }
 }
 

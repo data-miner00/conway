@@ -2,19 +2,11 @@
 #include <stdlib.h>
 
 void random_glider(Grid *grid, int count) {
-    if (grid->width < 3 || grid->height < 3) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 2);
         int random_y = rand() % (grid->height - 2);
 
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 2, random_y + 1, true);
-        grid_set(grid, random_x + 0, random_y + 2, true);
-        grid_set(grid, random_x + 1, random_y + 2, true);
-        grid_set(grid, random_x + 2, random_y + 2, true);
+        specific_glider(grid, random_x, random_y);
     }
 }
 
@@ -31,18 +23,11 @@ void specific_glider(Grid *grid, int x, int y) {
 }
 
 void random_block(Grid *grid, int count) {
-    if (grid->width < 2 || grid->height < 2) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 1);
         int random_y = rand() % (grid->height - 1);
 
-        grid_set(grid, random_x + 0, random_y + 0, true);
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 0, random_y + 1, true);
-        grid_set(grid, random_x + 1, random_y + 1, true);
+        specific_block(grid, random_x, random_y);
     }
 }
 
@@ -58,20 +43,11 @@ void specific_block(Grid *grid, int x, int y) {
 }
 
 void random_beehive(Grid *grid, int count) {
-    if (grid->width < 4 || grid->height < 3) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 3);
         int random_y = rand() % (grid->height - 2);
 
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 2, random_y + 0, true);
-        grid_set(grid, random_x + 0, random_y + 1, true);
-        grid_set(grid, random_x + 3, random_y + 1, true);
-        grid_set(grid, random_x + 1, random_y + 2, true);
-        grid_set(grid, random_x + 2, random_y + 2, true);
+        specific_beehive(grid, random_x, random_y);
     }
 }
 
@@ -89,18 +65,11 @@ void specific_beehive(Grid *grid, int x, int y) {
 }
 
 void random_tub(Grid *grid, int count) {
-    if (grid->width < 3 || grid->height < 3) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 2);
         int random_y = rand() % (grid->height - 2);
 
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 0, random_y + 1, true);
-        grid_set(grid, random_x + 2, random_y + 1, true);
-        grid_set(grid, random_x + 1, random_y + 2, true);
+        specific_tub(grid, random_x, random_y);
     }
 }
 
@@ -116,21 +85,11 @@ void specific_tub(Grid *grid, int x, int y) {
 }
 
 void random_loaf(Grid *grid, int count) {
-    if (grid->width < 4 || grid->height < 4) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 3);
         int random_y = rand() % (grid->height - 3);
 
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 2, random_y + 0, true);
-        grid_set(grid, random_x + 0, random_y + 1, true);
-        grid_set(grid, random_x + 3, random_y + 1, true);
-        grid_set(grid, random_x + 1, random_y + 2, true);
-        grid_set(grid, random_x + 3, random_y + 2, true);
-        grid_set(grid, random_x + 2, random_y + 3, true);
+        specific_loaf(grid, random_x, random_y);
     }
 }
 
@@ -149,19 +108,11 @@ void specific_loaf(Grid *grid, int x, int y) {
 }
 
 void random_boat(Grid *grid, int count) {
-    if (grid->width < 3 || grid->height < 3) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 2);
         int random_y = rand() % (grid->height - 2);
 
-        grid_set(grid, random_x + 0, random_y + 0, true);
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 0, random_y + 1, true);
-        grid_set(grid, random_x + 2, random_y + 1, true);
-        grid_set(grid, random_x + 1, random_y + 2, true);
+        specific_boat(grid, random_x, random_y);
     }
 }
 
@@ -178,23 +129,11 @@ void specific_boat(Grid *grid, int x, int y) {
 }
 
 void random_eater1(Grid *grid, int count) {
-    if (grid->width < 4 || grid->height < 4) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
         int random_x = rand() % (grid->width - 3);
         int random_y = rand() % (grid->height - 3);
 
-        grid_set(grid, random_x + 0, random_y + 0, true);
-        grid_set(grid, random_x + 1, random_y + 0, true);
-        grid_set(grid, random_x + 0, random_y + 1, true);
-
-        grid_set(grid, random_x + 2, random_y + 1, true);
-        grid_set(grid, random_x + 2, random_y + 2, true);
-        grid_set(grid, random_x + 2, random_y + 3, true);
-        grid_set(grid, random_x + 3, random_y + 3,
-                 true); // if 3 replaced with 4, will produce good generation
+        specific_eater1(grid, random_x, random_y);
     }
 }
 
