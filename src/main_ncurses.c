@@ -1,5 +1,5 @@
 #include "life.h"
-#include "pattern/oscillator.h"
+#include "pattern/spaceship.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     }
 
     // grid_fill_random(grid, 20);
-    random_pentadelcathon(grid, 40);
+    random_glider(grid, 40);
 
     while (true) {
         erase();

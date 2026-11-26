@@ -2,9 +2,6 @@
 #define STILL_H
 #include "../life.h"
 
-void random_glider(Grid *grid, int count);
-void specific_glider(Grid *grid, int x, int y);
-
 void random_block(Grid *grid, int count);
 void specific_block(Grid *grid, int x, int y);
 

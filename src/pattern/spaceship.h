@@ -1,0 +1,8 @@
+#ifndef SPACESHIP_H
+#define SPACESHIP_H
+#include "../life.h"
+
+void random_glider(Grid *grid, int count);
+void specific_glider(Grid *grid, int x, int y);
+
+#endif // SPACESHIP_H

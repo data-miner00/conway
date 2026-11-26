@@ -31,6 +31,7 @@ add_executable(
   src/life.c
   src/pattern/still.c
   src/pattern/oscillator.c
+  src/pattern/spaceship.c
 )
 
 target_include_directories(
