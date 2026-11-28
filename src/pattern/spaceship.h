@@ -11,4 +11,7 @@ void specific_lightweight_spaceship(Grid *grid, int x, int y);
 void random_middleweight_spaceship(Grid *grid, int count);
 void specific_middleweight_spaceship(Grid *grid, int x, int y);
 
+void random_heavyweight_spaceship(Grid *grid, int count);
+void specific_heavyweight_spaceship(Grid *grid, int x, int y);
+
 #endif // SPACESHIP_H
